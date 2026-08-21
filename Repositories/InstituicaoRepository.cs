@@ -14,9 +14,19 @@ namespace EventPlus.WebAPI.Repositories
             _context = context;
         }
 
-        public Task Atualizar(Guid id, Instituicao instituicao)
+        public async Task Atualizar(Guid id, Instituicao instituicao)
         {
-            throw new NotImplementedException();
+            var instituicaoBuscada = await _context.Instituicao.FindAsync(id);
+
+            if (instituicaoBuscada != null)
+            {
+                instituicaoBuscada.NomeFantasia = instituicao.NomeFantasia;
+                instituicaoBuscada.Cnpj = instituicao.Cnpj;
+                instituicaoBuscada.Endereco = instituicao.Endereco;
+
+                _context.Instituicao.Update(instituicaoBuscada);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<Instituicao?> BuscarPorId(Guid id)
@@ -31,14 +41,15 @@ namespace EventPlus.WebAPI.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task Cadastrar(IInstituicao instituicao)
+        public async Task Deletar(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            var instituicaoBuscada = await _context.Instituicao.FindAsync(id);
 
-        public Task Deletar(Guid id)
-        {
-            throw new NotImplementedException();
+            if (instituicaoBuscada != null)
+            {
+                _context.Instituicao.Remove(instituicaoBuscada);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Instituicao>> Listar()

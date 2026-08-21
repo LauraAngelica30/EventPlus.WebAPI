@@ -4,7 +4,7 @@ namespace EventPlus.WebAPI.Interfaces
 {
     public interface IInstituicao
     {
-        Task Cadastrar(IInstituicao instituicao);
+        Task Cadastrar(Instituicao instituicao);
 
         Task<List<Instituicao>> Listar();
 
@@ -13,6 +13,6 @@ namespace EventPlus.WebAPI.Interfaces
         Task Deletar(Guid id);
 
         Task<Instituicao?> BuscarPorId(Guid id);
-        Task Cadastrar(Instituicao instituicao);
+
     }
 }

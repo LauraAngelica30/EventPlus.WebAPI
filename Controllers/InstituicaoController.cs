@@ -37,7 +37,10 @@ namespace EventPlus.WebAPI.Controllers
         {
             var instituicao = new Instituicao
             {
-                NomeFantasia = dto.NomeFantasia
+                NomeFantasia = dto.NomeFantasia,
+                Cnpj = dto.CNPJ,
+                Endereco = dto.Endereco
+
             };
 
             await _instituicao.Cadastrar(instituicao);
@@ -45,7 +48,7 @@ namespace EventPlus.WebAPI.Controllers
             return StatusCode(201, instituicao);
         }
 
-        [HttpGet]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> BuscarPorId(Guid id)
         {
             var InstituicaoBuscada = await _instituicao.BuscarPorId(id);
@@ -56,6 +59,29 @@ namespace EventPlus.WebAPI.Controllers
             }
 
             return Ok(InstituicaoBuscada);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Atualizar(Guid id, [FromBody] InstituicaoDTO dto)
+        {
+            var intituicao = new Instituicao
+            {
+                NomeFantasia = dto.NomeFantasia,
+                Cnpj = dto.CNPJ,
+                Endereco = dto.Endereco
+            };
+
+            await _instituicao.Atualizar(id, intituicao);
+
+            return Ok(intituicao);
+        }
+
+        [HttpDelete("{id:guid}")]
+
+        public async Task<IActionResult> Deletar(Guid id)
+        {
+            await _instituicao.Deletar(id);
+            return NoContent();
         }
     }
 }
