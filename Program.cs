@@ -1,6 +1,8 @@
 using EventPlus.WebAPI.BdContextEvent;
 using EventPlus.WebAPI.Interfaces;
 using EventPlus.WebAPI.Repositories;
+using EventPlus.WebAPI.Services;
+using EventPlus.WebAPI.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,6 +29,8 @@ builder.Services.AddScoped<ITipoEvento, TipoEventoRepository>();
 builder.Services.AddScoped<IUsuario, UsuarioRepository>();
 builder.Services.AddScoped<IInstituicao, InstituicaoRepository>();
 builder.Services.AddScoped<IEvento, EventoRepository>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<IComentario, ComentarioRepository>();
 
 //AUTENTICAÇÃO JWT
 //Configura como a API vai validar os tokens recebidos nas requisições
@@ -56,10 +60,21 @@ builder.Services.AddAuthentication(options =>
 
         //chave secreta utilizada para validar a assinatura do token
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes("eventos-chave-autenticacao-webapi-dev")
+            System.Text.Encoding.UTF8.GetBytes("Jwt:Key")
         )
     };
 
+});
+
+//Configuração do cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+
+// --- Sightengine (plano Free, sem cartão) ---
+builder.Services.Configure<SightengineSettings>(builder.Configuration.GetSection("Sightengine"));
+
+builder.Services.AddHttpClient<IModerationService, SightengineModerationService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.sightengine.com/1.0/");
 });
 
 //Registra o serviço de autorização (necessário para [Authorize] funcionar)

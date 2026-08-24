@@ -14,8 +14,9 @@ namespace EventPlus.WebAPI.DTO
         [Required(ErrorMessage = "Campo obrigatório")]
         public string Descricao { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório")]
-        public string ImagemUrl { get; set; }
+        public string? ImagemUrl { get; set; }
+
+        public IFormFile? ArquivoImagem { get; set; }
 
         public Guid? IdTipoEvento { get; set; }
         public Guid? IdInstituicao { get; set; }

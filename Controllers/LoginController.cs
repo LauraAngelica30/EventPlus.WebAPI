@@ -25,9 +25,12 @@ namespace EventPlus.WebAPI.Controllers
     {
         private readonly IUsuario _usuario;
 
-        public LoginController(IUsuario usuario)
+        private readonly IConfiguration _config;
+
+        public LoginController(IUsuario usuario, IConfiguration configuration)
         {
             _usuario = usuario;
+            _config = configuration;
         }
 
         [HttpPost]
@@ -54,7 +57,7 @@ namespace EventPlus.WebAPI.Controllers
 
             // 4. Criar a chave de segurança com base na chave secreta definida
             var chaveaSecreta = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("eventos-chave-autenticacao-webapi-dev")
+                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
                 // Encoding.UTF8 : Definir o padrão de codificação de caracteres
                 // GetBytes: "Pegar" a string e devolver um array de bytes
              );

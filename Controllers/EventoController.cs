@@ -12,9 +12,13 @@ namespace EventPlus.WebAPI.Controllers
     {
         private readonly IEvento _evento;
 
-        public EventoController(IEvento evento)
+        private readonly ICloudinaryService _cloudinaryService;
+
+        public EventoController(IEvento evento, ICloudinaryService cloudinaryService)
         {
             _evento = evento;
+
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -34,21 +38,39 @@ namespace EventPlus.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Cadastrar([FromBody] EventoDTO dto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Cadastrar([FromForm] EventoDTO dto)
         {
-            var evento = new Evento
+            try
             {
-                NomeEvento = dto.NomeEvento,
-                DataEvento = dto.DataEvento,
-                Descricao = dto.Descricao,
-                ImagemUrl = dto.ImagemUrl,
-                IdTipoEvento = dto.IdTipoEvento,
-                IdInstituicao = dto.IdInstituicao
-            };
+                string? imagemUrl = null;
 
-            await _evento.Cadastrar(evento);
+                if (dto.ArquivoImagem is not null)
+                {
+                    imagemUrl = await _cloudinaryService.UploadImagem(dto.ArquivoImagem);
+                }
 
-            return StatusCode(201, evento);
+                var evento = new Evento
+                {
+                    NomeEvento = dto.NomeEvento,
+                    DataEvento = dto.DataEvento,
+                    Descricao = dto.Descricao,
+                    ImagemUrl = imagemUrl, // Url vindo do Cloudinary (ou null)
+                    IdTipoEvento = dto.IdTipoEvento,
+                    IdInstituicao = dto.IdInstituicao
+
+                };
+
+                    await _evento.Cadastrar(evento);
+
+                    return StatusCode(201, evento);
+            }
+            catch (Exception error)
+            {
+
+                return BadRequest(error.Message);
+            }
+
         }
 
         [HttpGet("{id:guid}")]
