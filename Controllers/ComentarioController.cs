@@ -44,5 +44,56 @@ namespace EventPlus.WebAPI.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Listar()
+        {
+            try
+            {
+                var comentarios = await _comentario.Listar();
+
+                return Ok(comentarios);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+        [HttpGet("{idEvento:guid}/ListarPorEvento")]
+        public async Task<IActionResult> ListarPorEvento(Guid idEvento)
+        {
+            try
+            {
+                var eventos = await _comentario.ListarPorEvento(idEvento);
+
+                return Ok(eventos);
+
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> BuscarPorId(Guid id)
+        {
+            var comentariobuscado = await _comentario.BuscarPorId(id);
+
+            if (comentariobuscado == null)
+            {
+                return NotFound("Comentario não encontrado");
+            }
+
+            return Ok(comentariobuscado);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Deletar(Guid id)
+        {
+            await _comentario.Deletar(id);
+            return NoContent();
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace EventPlus.WebAPI.Interfaces
 
         Task<List<Comentario>> Listar();
 
-        Task<List<Comentario>> ListarPorEvento(Guid IdEvento);
+        Task<List<Comentario>> ListarPorEvento(Guid idEvento);
 
         Task Deletar(Guid id);
 

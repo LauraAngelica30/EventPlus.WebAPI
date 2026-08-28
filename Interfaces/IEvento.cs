@@ -14,10 +14,10 @@ namespace EventPlus.WebAPI.Interfaces
 
         Task<Evento?> BuscarPorId(Guid id);
 
-        Task<List<Evento>> ListarPorInstituicao(Guid id);
+        Task<List<Evento>> ListarPorInstituicao(Guid idInstituicao);
 
         Task<List<Evento>> ListarPorInscrito(Guid id);
 
-        Task<List<Evento>> ListarProximosEventos(Guid id);
+        Task<List<Evento>> ListarProximosEventos(Guid idEvento);
     }
 }

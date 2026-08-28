@@ -37,6 +37,37 @@ namespace EventPlus.WebAPI.Controllers
             }
         }
 
+        [HttpGet("{idInstituicao:guid}/ListarPorInstituicao")]
+        public async Task<IActionResult> ListarPorInstituicao(Guid idInstituicao)
+        {
+            try
+            {
+                var intituicoes = await _evento.ListarPorInstituicao(idInstituicao);
+
+                return Ok(intituicoes);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+        [HttpGet("{idProximos:guid}/ListarProximosEventos")]
+        public async Task<IActionResult> ListarProximosEventos(Guid idProximos)
+        {
+            try
+            {
+                var proximosEventos = await _evento.ListarProximosEventos(idProximos);
+
+                return Ok(proximosEventos);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Cadastrar([FromForm] EventoDTO dto)
@@ -58,7 +89,6 @@ namespace EventPlus.WebAPI.Controllers
                     ImagemUrl = imagemUrl, // Url vindo do Cloudinary (ou null)
                     IdTipoEvento = dto.IdTipoEvento,
                     IdInstituicao = dto.IdInstituicao
-
                 };
 
                     await _evento.Cadastrar(evento);

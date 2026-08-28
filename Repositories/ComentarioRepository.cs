@@ -41,9 +41,9 @@ namespace EventPlus.WebAPI.Repositories
             return await _context.Comentario.AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<Comentario>> ListarPorEvento(Guid IdEvento)
+        public async Task<List<Comentario>> ListarPorEvento(Guid idEvento)
         {
-            return await _context.Comentario.Where(x => x.IdEvento == IdEvento).ToListAsync();
+            return await _context.Comentario.Where(x => x.IdEvento == idEvento).ToListAsync();
         }
     }
 }

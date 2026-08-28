@@ -10,7 +10,7 @@ namespace EventPlus.WebAPI.Interfaces
 
         Task<List<Presenca>> ListarMinhas(Guid idUsuario);
 
-        Task AtualizarSituacao(Guid id, bool situacao);
+        Task AtualizarSituacao(Guid id, Presenca presenca);
 
         Task Deletar(Guid id);
 

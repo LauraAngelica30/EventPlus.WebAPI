@@ -13,20 +13,20 @@ namespace EventPlus.WebAPI.Repositories
         {
             _context = context;
         }
-        public async Task AtualizarSituacao(Guid id, bool situacao)
+        public async Task AtualizarSituacao(Guid id, Presenca presenca)
         {
             var presencaBuscada = await _context.Presenca.FindAsync(id);
 
             if (presencaBuscada != null)
             {
-                presencaBuscada.Situacao = situacao;
+                presencaBuscada.Situacao = presenca.Situacao;
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<Presenca?> BuscarPorId(Guid id)
         {
-            return await _context.Presenca.FirstOrDefaultAsync(t => t.IdPresenca == id);
+             return await _context.Presenca.FirstOrDefaultAsync(t => t.IdPresenca == id);
         }
 
         public async Task Deletar(Guid id)
@@ -40,9 +40,11 @@ namespace EventPlus.WebAPI.Repositories
             }
         }
 
-        public Task Increver(Presenca presenca)
+        public async Task Increver(Presenca presenca)
         {
-            throw new NotImplementedException();
+            await _context.Presenca.AddAsync(presenca);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Presenca>> Listar()

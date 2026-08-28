@@ -20,5 +20,6 @@ namespace EventPlus.WebAPI.DTO
 
         public Guid? IdTipoEvento { get; set; }
         public Guid? IdInstituicao { get; set; }
+
     }
 }

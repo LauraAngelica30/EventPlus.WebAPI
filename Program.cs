@@ -31,6 +31,7 @@ builder.Services.AddScoped<IInstituicao, InstituicaoRepository>();
 builder.Services.AddScoped<IEvento, EventoRepository>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IComentario, ComentarioRepository>();
+builder.Services.AddScoped<IPresenca, PresencaRepository>();
 
 //AUTENTICAÇÃO JWT
 //Configura como a API vai validar os tokens recebidos nas requisições
@@ -69,13 +70,13 @@ builder.Services.AddAuthentication(options =>
 //Configuração do cloudinary
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
-// --- Sightengine (plano Free, sem cartão) ---
-builder.Services.Configure<SightengineSettings>(builder.Configuration.GetSection("Sightengine"));
+//// --- Sightengine (plano Free, sem cartão) ---
+//builder.Services.Configure<SightengineSettings>(builder.Configuration.GetSection("Sightengine"));
 
-builder.Services.AddHttpClient<IModerationService, SightengineModerationService>(client =>
-{
-    client.BaseAddress = new Uri("https://api.sightengine.com/1.0/");
-});
+//builder.Services.AddHttpClient<IModerationService, SightengineModerationService>(client =>
+//{
+//    client.BaseAddress = new Uri("https://api.sightengine.com/1.0/");
+//});
 
 //Registra o serviço de autorização (necessário para [Authorize] funcionar)
 builder.Services.AddAuthorization();

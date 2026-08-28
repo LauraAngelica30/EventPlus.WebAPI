@@ -65,14 +65,14 @@ namespace EventPlus.WebAPI.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<Evento>> ListarPorInstituicao(Guid id)
+        public async Task<List<Evento>> ListarPorInstituicao(Guid idInstituicao)
         {
-            return await _context.Evento.Where(x => x.IdInstituicao == id).ToListAsync();
+            return await _context.Evento.Where(x => x.IdInstituicao == idInstituicao).ToListAsync();
         }
 
-        public async Task<List<Evento>> ListarProximosEventos(Guid id)
+        public async Task<List<Evento>> ListarProximosEventos(Guid idEvento)
         {
-            return await _context.Evento.Where(x => x.IdEvento == id).ToListAsync();
+            return await _context.Evento.Where(x => x.IdEvento == idEvento).ToListAsync();
         }
     }
 }
