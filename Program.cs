@@ -6,9 +6,28 @@ using EventPlus.WebAPI.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Adicionando Swagger
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "Insira um token válido para ter acesso aos endpoints da API"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+
+});
 
 //Configuração do EFCore - Banco de Dados
 builder.Services.AddDbContext<EventContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -70,13 +89,13 @@ builder.Services.AddAuthentication(options =>
 //Configuração do cloudinary
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
-//// --- Sightengine (plano Free, sem cartão) ---
-//builder.Services.Configure<SightengineSettings>(builder.Configuration.GetSection("Sightengine"));
+// --- Sightengine (plano Free, sem cartão) ---
+builder.Services.Configure<SightengineSettings>(builder.Configuration.GetSection("Sightengine"));
 
-//builder.Services.AddHttpClient<IModerationService, SightengineModerationService>(client =>
-//{
-//    client.BaseAddress = new Uri("https://api.sightengine.com/1.0/");
-//});
+builder.Services.AddHttpClient<IModerationService, SightengineModerationService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.sightengine.com/1.0/");
+});
 
 //Registra o serviço de autorização (necessário para [Authorize] funcionar)
 builder.Services.AddAuthorization();
@@ -85,6 +104,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 //Redireciona Http para Https automaticamente
 app.UseHttpsRedirection();

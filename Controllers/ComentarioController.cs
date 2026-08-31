@@ -29,6 +29,7 @@ namespace EventPlus.WebAPI.Controllers
 
                 var comentario = new Comentario
                 {
+                    DataComentario = DateTime.Now,
                     Descricao = dto.Descricao,
                     IdEvento = dto.IdEvento,
                     IdUsuario = dto.IdUsuario,
@@ -61,7 +62,7 @@ namespace EventPlus.WebAPI.Controllers
         }
 
         [HttpGet("{idEvento:guid}/ListarPorEvento")]
-        public async Task<IActionResult> ListarPorEvento(Guid idEvento)
+        public async Task<IActionResult> ListarPorEvento(Guid idEvento)                              
         {
             try
             {

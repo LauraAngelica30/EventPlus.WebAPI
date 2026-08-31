@@ -37,6 +37,21 @@ namespace EventPlus.WebAPI.Controllers
             }
         }
 
+        [HttpGet("{id:guid}/ListarPorInscrito")]
+        public async Task<IActionResult> ListarPorInscrito(Guid id)
+        {
+            try
+            {
+                var inscritos = await _evento.ListarPorInscrito(id);
+
+                return Ok(inscritos);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
         [HttpGet("{idInstituicao:guid}/ListarPorInstituicao")]
         public async Task<IActionResult> ListarPorInstituicao(Guid idInstituicao)
         {

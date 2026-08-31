@@ -25,7 +25,8 @@ namespace EventPlus.WebAPI.Controllers
                 var presenca = new Presenca
                 {
                     IdEvento = dto.IdEvento,
-                    IdUsuario = dto.IdUsuario
+                    IdUsuario = dto.IdUsuario,
+                    Situacao = dto.situacao
                 };
 
                 await _presenca.Increver(presenca);

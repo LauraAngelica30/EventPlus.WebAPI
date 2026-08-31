@@ -62,7 +62,7 @@ namespace EventPlus.WebAPI.Repositories
 
         public async Task<List<Evento>> ListarPorInscrito(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Evento.Where(x => x.Presenca.Any(p => p.IdUsuario == id)).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<Evento>> ListarPorInstituicao(Guid idInstituicao)
